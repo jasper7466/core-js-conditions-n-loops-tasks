@@ -90,8 +90,28 @@ function canQueenCaptureKing({ x: qX, y: qY }, { x: kX, y: kY }) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  if (a === 0 || b === 0 || c === 0) {
+    return false;
+  }
+
+  const eq1 = a === b ? 1 : 0;
+  const eq2 = a === c ? 1 : 0;
+  const eq3 = b === c ? 1 : 0;
+
+  if (eq1 + eq2 + eq3 < 1) {
+    return false;
+  }
+
+  const sum1 = a + b >= c ? 1 : 0;
+  const sum2 = a + c >= b ? 1 : 0;
+  const sum3 = b + c >= a ? 1 : 0;
+
+  if (sum1 + sum2 + sum3 === 3) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
