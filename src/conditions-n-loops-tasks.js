@@ -131,14 +131,14 @@ function isIsoscelesTriangle(a, b, c) {
 function convertToRomanNumerals(num) {
   let n = num;
   const dict = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
-  const repeatStr = function (str, count) {
+  function repeatStr(str, count) {
     let result = '';
     for (let i = 0; i < count; i += 1) {
       result += str;
     }
 
     return result;
-  };
+  }
 
   const xCount = Math.floor(n / 10);
 
@@ -163,7 +163,7 @@ function convertToRomanNumerals(num) {
  *  '1950.2'  => 'one nine five zero point two'
  */
 function convertNumberToString(numberStr) {
-  const dictEmulatorViaSwitch = function (value) {
+  function dictViaSwitchEmulator(value) {
     switch (value) {
       case '0':
         return 'zero';
@@ -194,7 +194,7 @@ function convertNumberToString(numberStr) {
       default:
         return '';
     }
-  };
+  }
 
   let result = '';
 
@@ -203,7 +203,7 @@ function convertNumberToString(numberStr) {
       result += ' ';
     }
 
-    result += dictEmulatorViaSwitch(numberStr[i]);
+    result += dictViaSwitchEmulator(numberStr[i]);
   }
 
   return result;
@@ -221,8 +221,13 @@ function convertNumberToString(numberStr) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  for (let i = 0, j = str.length - 1; i < j; i += 1, j -= 1) {
+    if (str[i] !== str[j]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
