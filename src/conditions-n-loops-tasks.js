@@ -343,8 +343,89 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = Array(size);
+  const totalCount = size * size;
+  const current = { x: 0, y: 0 };
+  let count = 1;
+  let direction = 0;
+
+  const directions = [
+    { x: 1, y: 0 },
+    { x: 0, y: 1 },
+    { x: -1, y: 0 },
+    { x: 0, y: -1 },
+  ];
+
+  const bounds = {
+    left: 0,
+    right: size - 1,
+    top: 0,
+    bottom: size - 1,
+  };
+
+  function switchDirection() {
+    switch (direction) {
+      case 0: {
+        bounds.top += 1;
+        break;
+      }
+      case 1: {
+        bounds.right -= 1;
+        break;
+      }
+      case 2: {
+        bounds.bottom -= 1;
+        break;
+      }
+      case 3: {
+        bounds.left += 1;
+        break;
+      }
+      default: {
+        throw new Error('Unexpected direction index');
+      }
+    }
+
+    direction += 1;
+
+    if (direction >= 4) {
+      direction = 0;
+    }
+  }
+
+  function isBoundReached() {
+    switch (direction) {
+      case 0:
+        return current.x === bounds.right;
+      case 1:
+        return current.y === bounds.bottom;
+      case 2:
+        return current.x === bounds.left;
+      case 3:
+        return current.y === bounds.top;
+      default:
+        throw new Error('Unexpected direction index');
+    }
+  }
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = new Array(size);
+  }
+
+  while (count <= totalCount) {
+    matrix[current.y][current.x] = count;
+
+    if (isBoundReached()) {
+      switchDirection();
+    }
+
+    current.x += directions[direction].x;
+    current.y += directions[direction].y;
+    count += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -362,8 +443,26 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const size = matrix.length;
+
+  function swap(source, [x1, y1], [x2, y2]) {
+    const src = source;
+
+    [src[y1][x1], src[y2][x2]] = [src[y2][x2], src[y1][x1]];
+  }
+
+  for (let layer = 0; layer < Math.floor(size / 2); layer += 1) {
+    const subMaxIndex = size - layer - 1;
+
+    for (let i = 0; i < subMaxIndex - layer; i += 1) {
+      swap(matrix, [layer + i, layer], [subMaxIndex, layer + i]);
+      swap(matrix, [layer + i, layer], [subMaxIndex - i, subMaxIndex]);
+      swap(matrix, [layer + i, layer], [layer, subMaxIndex - i]);
+    }
+  }
+
+  return matrix;
 }
 
 /**
