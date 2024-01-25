@@ -531,28 +531,22 @@ function sortByAsc(arr, from = 0, to = arr.length - 1) {
       rightIndex -= 1;
     }
 
-    if (leftIndex === pivotIndex || rightIndex === pivotIndex) {
-      if (leftIndex + 1 === rightIndex) {
-        swapItem(arr, leftIndex, rightIndex);
-        if (pivotIndex === leftIndex) {
-          pivotIndex += 1;
-        } else {
-          pivotIndex -= 1;
-        }
-        leftIndex += 1;
-        rightIndex -= 1;
-        break;
+    if (leftIndex + 1 === rightIndex) {
+      swapItem(arr, leftIndex, rightIndex);
+      if (pivotIndex === leftIndex) {
+        pivotIndex += 1;
+      } else {
+        pivotIndex -= 1;
       }
+      break;
+    }
+
+    if (leftIndex === pivotIndex || rightIndex === pivotIndex) {
       const middleIndex = Math.ceil((leftIndex + rightIndex) / 2);
       swapItem(arr, pivotIndex, middleIndex);
       pivotIndex = middleIndex;
     } else {
       swapItem(arr, leftIndex, rightIndex);
-      if (pivotIndex === leftIndex) {
-        pivotIndex += 1;
-      } else if (pivotIndex === rightIndex) {
-        pivotIndex -= 1;
-      }
       leftIndex += 1;
       rightIndex -= 1;
     }
