@@ -466,6 +466,31 @@ function rotateMatrix(matrix) {
 }
 
 /**
+ * Swaps array items at specified indexes.
+ *
+ * @param {*} arr Target array.
+ * @param {*} indexA First index to swap.
+ * @param {*} indexB Second index to swap.
+ */
+function swapItem(arr, indexA, indexB) {
+  const a = arr; // Because of linter...
+
+  [a[indexA], a[indexB]] = [a[indexB], a[indexA]];
+}
+
+/**
+ * Random integer generator.
+ *
+ * @param {number} min Range start
+ * @param {number} max Range end (inclusive)
+ * @returns {number} Random integer in range [min, max]
+ */
+function randomInteger(min, max) {
+  const random = min + Math.random() * (max + 1 - min);
+  return Math.floor(random);
+}
+
+/**
  * Sorts an array of numbers in ascending order in place.
  * Employ any sorting algorithm of your choice.
  * Take into account that the array can be very large. Consider how you can optimize your solution.
@@ -479,8 +504,61 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr, from = 0, to = arr.length - 1) {
+  const indexDiff = to - from;
+
+  if (indexDiff <= 0) {
+    return;
+  }
+
+  if (indexDiff === 1) {
+    if (arr[from] > arr[to]) {
+      swapItem(arr, from, to);
+    }
+    return;
+  }
+
+  let pivotIndex = randomInteger(from, to);
+  let leftIndex = from;
+  let rightIndex = to;
+
+  while (leftIndex < rightIndex) {
+    while (arr[leftIndex] < arr[pivotIndex] && leftIndex !== pivotIndex) {
+      leftIndex += 1;
+    }
+
+    while (arr[rightIndex] > arr[pivotIndex] && rightIndex !== pivotIndex) {
+      rightIndex -= 1;
+    }
+
+    if (leftIndex === pivotIndex || rightIndex === pivotIndex) {
+      if (leftIndex + 1 === rightIndex) {
+        swapItem(arr, leftIndex, rightIndex);
+        if (pivotIndex === leftIndex) {
+          pivotIndex += 1;
+        } else {
+          pivotIndex -= 1;
+        }
+        leftIndex += 1;
+        rightIndex -= 1;
+        break;
+      }
+      const middleIndex = Math.ceil((leftIndex + rightIndex) / 2);
+      swapItem(arr, pivotIndex, middleIndex);
+      pivotIndex = middleIndex;
+    } else {
+      swapItem(arr, leftIndex, rightIndex);
+      if (pivotIndex === leftIndex) {
+        pivotIndex += 1;
+      } else if (pivotIndex === rightIndex) {
+        pivotIndex -= 1;
+      }
+      leftIndex += 1;
+      rightIndex -= 1;
+    }
+  }
+  sortByAsc(arr, from, pivotIndex - 1);
+  sortByAsc(arr, pivotIndex + 1, to);
 }
 
 /**
